@@ -42,4 +42,5 @@ public class EmpDAOImpl implements EmployeeDAO {
         Session session = sessionFactory.getCurrentSession();
         session.remove(employee);
     }
+
 }

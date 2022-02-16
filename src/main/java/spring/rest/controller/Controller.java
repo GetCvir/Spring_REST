@@ -35,21 +35,26 @@ public class Controller {
         return employee;
     }
 
-    @ExceptionHandler
-    public ResponseEntity<EmployeeIncorrectData> handleException(NoSuchEmployeeException exception){
-        EmployeeIncorrectData data=new EmployeeIncorrectData();
-        data.setInfo(exception.getMessage());
-
-        return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
-
+    @PostMapping("/employees")
+    public Employee addEmployee(@RequestBody Employee employee){
+        empService.saveEmployee(employee);
+        return employee;
     }
 
-    @ExceptionHandler
-    public ResponseEntity<EmployeeIncorrectData> handleException(Exception exception){
-        EmployeeIncorrectData data=new EmployeeIncorrectData();
-        data.setInfo(exception.getMessage());
+    @PutMapping("/employees")
+    public Employee updateEmployee(@RequestBody Employee employee){
+        empService.saveEmployee(employee);
+        return employee;
+    }
 
-        return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+    @DeleteMapping("/employees/{id}")
+    public String deleteEmployee(@PathVariable int id){
 
+        Employee employee=empService.getEmployee(id);
+        if(employee==null) throw new NoSuchEmployeeException("No such employee with id="+id+" in DB.");
+
+        empService.deleteEmployee(employee);
+
+        return "Employee with id="+id+" deleted from DB";
     }
 }
